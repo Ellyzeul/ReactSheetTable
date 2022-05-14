@@ -1,4 +1,5 @@
-import { ChangeEventHandler, KeyboardEventHandler, MouseEventHandler, useState } from 'react'
+import { ChangeEventHandler, MouseEventHandler, useState } from 'react'
+import { TableCellInput } from '../TableCellInput'
 import './style.css'
 import { TableCellProp } from './types'
 
@@ -20,36 +21,10 @@ export const TableCell = (props: TableCellProp) => {
 
     const onClick: MouseEventHandler<HTMLTableCellElement> = (event) => {
         const cell = event.target as HTMLTableCellElement
-        const input = cell.firstChild as HTMLInputElement
-        if(!input) return
+        const element = cell.firstChild as HTMLElement
+        if(!element) return
 
-        input.focus()
-    }
-
-    const onChange: ChangeEventHandler<HTMLInputElement> = (event) => {
-        const input = event.target
-        const row = input.parentElement?.parentElement as HTMLTableRowElement
-        const toUpdate = [] as any[]
-
-        setValue(input.value)
-        
-        row.childNodes.forEach(cell => toUpdate.push((cell.firstChild as HTMLInputElement).value))
-
-        setToUpdate(toUpdate)
-    }
-
-    const onKeyDown: KeyboardEventHandler<HTMLInputElement> = (event) => {
-        const key = event.key
-        const input = event.target as HTMLInputElement
-
-        if(key === 'Enter' || key === 'Escape') {
-            input.blur()
-        }
-    }
-
-    const onBlur = () => {
-        updateRow(toUpdate)
-        setToUpdate([] as any[])
+        element.focus()
     }
 
     return (
@@ -61,13 +36,16 @@ export const TableCell = (props: TableCellProp) => {
             onClick={onClick}
         >
             {
-                <input 
-                value={value} 
-                onClick={() => null} 
-                onChange={onChange} 
-                onKeyDown={onKeyDown} 
-                onBlur={onBlur} 
-            />}
+                cellType === 'input' 
+                ? <TableCellInput 
+                    value={value} 
+                    setValue={setValue} 
+                    toUpdate={toUpdate} 
+                    setToUpdate={setToUpdate} 
+                    updateRow={updateRow} 
+                />
+                : <input type="text" onChange={(event) => setValue(event.target.value)} />
+            }
         </td>
     )
 }
