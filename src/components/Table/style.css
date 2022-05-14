@@ -1,0 +1,15 @@
+.table {
+    background-color: white;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+}
+.table > tbody {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+.table > tbody > tr {
+    margin: 0;
+    padding: 0;
+}
