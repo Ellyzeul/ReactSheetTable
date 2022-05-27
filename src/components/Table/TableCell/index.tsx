@@ -20,13 +20,13 @@ export const TableCell = (props: TableCellProp) => {
 
     function renderCell(cell: string | number | KeyValue[]) {
         if (typeof cell === 'string' || typeof cell === 'number') {
-            return <TableCellInput cell={cell} updateRow={updateRow} />
+            return <TableCellInput cell={cell} header={header} updateRow={updateRow} />
         }
         if (Array.isArray(cell)) {
             return <TableCellSelect cell={cell} updateRow={updateRow} />
         }
 
-        return <TableCellInput cell={""} updateRow={updateRow} />
+        return <TableCellInput cell={""} header={header} updateRow={updateRow} />
     }
 
     return (

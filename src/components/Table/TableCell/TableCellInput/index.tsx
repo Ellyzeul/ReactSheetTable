@@ -1,13 +1,18 @@
-import { ChangeEventHandler, KeyboardEventHandler, useState } from 'react'
+import { ChangeEventHandler, FocusEventHandler, KeyboardEventHandler, useEffect, useState } from 'react'
 import "./style.css"
 import { TableCellInputProp } from './types'
 import { OutputRow } from '../types'
 
 
 export const TableCellInput = (props: TableCellInputProp) => {
-    const { cell, updateRow } = props
+    const { cell, header, updateRow } = props
     const [value, setValue] = useState(cell)
+    const [initialValue, setInitialValue] = useState(value)
     const [toUpdate, setToUpdate] = useState({} as OutputRow)
+
+    const onFocus: FocusEventHandler<HTMLInputElement> = (event)=> {
+        setInitialValue(value)
+    }
 
     const onChange: ChangeEventHandler<HTMLInputElement> = (event) => {
         const input = event.target
@@ -30,8 +35,18 @@ export const TableCellInput = (props: TableCellInputProp) => {
         const key = event.key
         const input = event.target as HTMLInputElement
 
-        if(key === 'Enter' || key === 'Escape') {
+        if(key === 'Enter') {
             input.blur()
+            return
+        }
+        if(key === 'Escape') {
+            const newToUpdate = toUpdate
+            newToUpdate[header] = `${initialValue}`
+            setToUpdate(newToUpdate)
+            setValue(initialValue)
+
+            input.blur()
+            return
         }
     }
 
@@ -44,7 +59,7 @@ export const TableCellInput = (props: TableCellInputProp) => {
         <input 
             className='table_cell_input'
             value={value} 
-            onClick={() => null} 
+            onFocus={onFocus} 
             onChange={onChange} 
             onKeyDown={onKeyDown} 
             onBlur={onBlur} 
