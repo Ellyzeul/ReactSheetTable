@@ -1,25 +1,29 @@
-import { ChangeEventHandler, KeyboardEventHandler } from 'react'
+import { ChangeEventHandler, KeyboardEventHandler, useState } from 'react'
 import "./style.css"
 import { TableCellInputProp } from './types'
+import { OutputRow } from '../types'
 
 
 export const TableCellInput = (props: TableCellInputProp) => {
-    const value = props.value
-    const setValue = props.setValue
-    const toUpdate = props.toUpdate
-    const setToUpdate = props.setToUpdate
-    const updateRow = props.updateRow
+    const { cell, updateRow } = props
+    const [value, setValue] = useState(cell)
+    const [toUpdate, setToUpdate] = useState({} as OutputRow)
 
     const onChange: ChangeEventHandler<HTMLInputElement> = (event) => {
         const input = event.target
         const row = input.parentElement?.parentElement as HTMLTableRowElement
-        const toUpdate = [] as any[]
+        const newToUpdate = toUpdate
 
         setValue(input.value)
         
-        row.childNodes.forEach(cell => toUpdate.push((cell.firstChild as HTMLInputElement).value))
+        newToUpdate.id = row.id
+        row.childNodes.forEach((cell) => {
+            const td = cell as HTMLTableCellElement
+            const input = td.firstChild as HTMLInputElement
+            newToUpdate[td.headers] = input.value
+        })
 
-        setToUpdate(toUpdate)
+        setToUpdate(newToUpdate)
     }
 
     const onKeyDown: KeyboardEventHandler<HTMLInputElement> = (event) => {
@@ -33,11 +37,12 @@ export const TableCellInput = (props: TableCellInputProp) => {
 
     const onBlur = () => {
         updateRow(toUpdate)
-        setToUpdate([] as any[])
+        setToUpdate({} as OutputRow)
     }
 
     return (
         <input 
+            className='table_cell_input'
             value={value} 
             onClick={() => null} 
             onChange={onChange} 

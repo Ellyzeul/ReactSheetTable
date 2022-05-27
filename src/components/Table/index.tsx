@@ -1,51 +1,45 @@
-import { TableCell } from '../TableCell'
 import './style.css'
-import { TableProp } from './types'
+import { TableCell } from './TableCell'
+import { OutputRow } from './TableCell/types'
+import { ITableRow, TableProp } from './types'
 
 
 export const Table = (props: TableProp) => {
-    const headers = props.headers
-    const data = props.data
+    const { headers, rows } = props
 
-    const renderRow = (row: any[], type: string, rowNumber: number = 0) => {
-        const rowList = [] as JSX.Element[]
-        let id = 0
-        row.forEach((cell: any) => rowList.push(
-            type === 'head'
-            ? <th className='sheet_cell' key={id++}>{cell}</th>
-            : type === 'body'
-                ? <TableCell data={data[rowNumber][id]} updateRow={updateRow} key={id++} />
-                : <td />
-        ))
-
-        return rowList
+    const renderHeader = () => {
+        return headers.map((header, index) => <th className='sheet_cell' key={index}>{header}</th>)
     }
-
-    const renderHeaders = () => renderRow(headers, 'head')
 
     const renderRows = () => {
-        const rowsList = [] as JSX.Element[]
-        let id = 0
-        data.forEach(row => rowsList.push(
-            <tr key={id++}>
-                {renderRow(row, 'body', id)}
-            </tr>
-        ))
-
-        return rowsList
+        return rows.map((row, index) => <tr id={row.id as string} key={index}>{renderRow(row)}</tr>)
     }
 
-    const updateRow = (data: any[]) => {
-        if(data.length !== headers.length) return
+    const renderRow = (row: ITableRow) => {
+        const cellList = []
+        for (const cell in row) {
+            if(cell === 'id') continue
+            cellList.push({
+                header: cell,
+                row: row[cell],
+            })
+        }
 
-        console.log(data)
+        return cellList.map((cell, index) => <TableCell cell={cell.row} header={cell.header} updateRow={updateRow} key={index} />)
+    }
+
+
+    const updateRow = (row: OutputRow) => {
+        if(Object.keys(row).length !== headers.length + 1) return
+
+        console.log(row)
     }
 
     return (
         <table className="table">
             <thead>
                 <tr>
-                    {renderHeaders()}
+                    {renderHeader()}
                 </tr>
             </thead>
             <tbody>
