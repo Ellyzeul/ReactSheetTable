@@ -1,4 +1,4 @@
-import { ChangeEventHandler, KeyboardEventHandler, useState } from 'react'
+import { ChangeEventHandler, useState } from 'react'
 import { KeyValue } from '../../types'
 import { OutputRow } from '../types'
 import './style.css'
