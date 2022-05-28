@@ -1,4 +1,4 @@
-import { ChangeEventHandler, FocusEventHandler, KeyboardEventHandler, useEffect, useState } from 'react'
+import { ChangeEventHandler, FocusEventHandler, KeyboardEventHandler, useState } from 'react'
 import "./style.css"
 import { TableCellInputProp } from './types'
 import { OutputRow } from '../types'
@@ -10,7 +10,7 @@ export const TableCellInput = (props: TableCellInputProp) => {
     const [initialValue, setInitialValue] = useState(value)
     const [toUpdate, setToUpdate] = useState({} as OutputRow)
 
-    const onFocus: FocusEventHandler<HTMLInputElement> = (event)=> {
+    const onFocus: FocusEventHandler<HTMLInputElement> = ()=> {
         setInitialValue(value)
     }
 
@@ -55,9 +55,35 @@ export const TableCellInput = (props: TableCellInputProp) => {
         setToUpdate({} as OutputRow)
     }
 
+    const getTextWidth = (text: string, font: string) => {
+        const canvas = getTextWidth.canvas
+        const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
+        ctx.font = font
+        const width = ctx?.measureText(text).width * 0.85 as number
+
+        return `${width}px`
+    }
+    getTextWidth.canvas = document.createElement('canvas') as HTMLCanvasElement
+
+    const getCssStyle = (element: HTMLElement, prop: string) => {
+        return window.getComputedStyle(element, null).getPropertyValue(prop);
+    }
+    
+    const getCanvasFontSize = (el = document.body) => {
+      const fontWeight = getCssStyle(el, 'font-weight') || 'normal';
+      const fontSize = getCssStyle(el, 'font-size') || '12px';
+      const fontFamily = getCssStyle(el, 'font-family') || 'Helvetica';
+      
+      return `${fontWeight} ${fontSize} ${fontFamily}`;
+    }
+
     return (
         <input 
             className='table_cell_input'
+            style={{
+                minWidth: '20px',
+                width: getTextWidth(value as string, getCanvasFontSize())
+            }}
             value={value} 
             onFocus={onFocus} 
             onChange={onChange} 

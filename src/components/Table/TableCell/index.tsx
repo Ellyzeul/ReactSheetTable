@@ -33,9 +33,6 @@ export const TableCell = (props: TableCellProp) => {
         <td 
             className='table_cell' 
             headers={header}
-            // style={{
-            //     width: value.length > 4 ? `${value.length * resizeCoeficient}px` : "30px"
-            // }}
             onClick={onClick}
         >   
             {renderCell(cell)}

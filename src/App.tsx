@@ -7,7 +7,7 @@ function App() {
 
 
   const rows: ITableRow[] = [
-    {'id': 0, 'a': 1, 'b': 2,  'c': 3,  'd': [{key:0, value:"a"}, {key:1, value:"b"}, {key:2, value:"c"}]},
+    {'id': 0, 'a': 1, 'b': 2,  'c': 3,  'd': [{key:0, value:"String A"}, {key:1, value:"String B"}, {key:2, value:"Another string c"}]},
     {'id': 1, 'a': 1, 'b': 2,  'c': 3,  'd': [{key:0, value:"a"}, {key:1, value:"b"}, {key:2, value:"c"}]}
   ]
 
