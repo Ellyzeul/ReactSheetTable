@@ -1,9 +1,9 @@
-export interface TableProp {
+export interface ReactSheetTableProp {
     headers: string[],
-    rows: ITableRow[]
+    rows: ReactSheetTableRow[]
 }
 
-export interface ITableRow{
+export interface ReactSheetTableRow{
   id: number| string,
   [key: string]: number | string | KeyValue[]
 }

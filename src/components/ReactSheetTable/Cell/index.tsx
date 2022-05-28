@@ -1,12 +1,12 @@
 import { MouseEventHandler } from 'react'
-import { TableCellInput } from './TableCellInput'
-import { TableCellSelect } from './TableCellSelect'
+import { Input } from './Input'
+import { Select } from './Select'
 import './style.css'
 import { TableCellProp } from './types'
 import { KeyValue } from '../types'
 
 
-export const TableCell = (props: TableCellProp) => {
+export const Cell = (props: TableCellProp) => {
     const { cell, header, updateRow  } = props
 
     const onClick: MouseEventHandler<HTMLTableCellElement> = (event) => {
@@ -20,13 +20,13 @@ export const TableCell = (props: TableCellProp) => {
 
     function renderCell(cell: string | number | KeyValue[]) {
         if (typeof cell === 'string' || typeof cell === 'number') {
-            return <TableCellInput cell={cell} header={header} updateRow={updateRow} />
+            return <Input cell={cell} header={header} updateRow={updateRow} />
         }
         if (Array.isArray(cell)) {
-            return <TableCellSelect cell={cell} updateRow={updateRow} />
+            return <Select cell={cell} updateRow={updateRow} />
         }
 
-        return <TableCellInput cell={""} header={header} updateRow={updateRow} />
+        return <Input cell={""} header={header} updateRow={updateRow} />
     }
 
     return (

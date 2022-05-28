@@ -5,7 +5,7 @@ import './style.css'
 import { TableCellSelectProp } from './types'
 
 
-export const TableCellSelect = (props: TableCellSelectProp) => {
+export const Select = (props: TableCellSelectProp) => {
     const { cell, updateRow } = props
     const [value, setValue] = useState(cell[0].key)
     const [toUpdate, setToUpdate] = useState({} as OutputRow)

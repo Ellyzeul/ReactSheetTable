@@ -1,10 +1,10 @@
 import './style.css'
-import { TableCell } from './TableCell'
-import { OutputRow } from './TableCell/types'
-import { ITableRow, TableProp } from './types'
+import { Cell } from './Cell'
+import { OutputRow } from './Cell/types'
+import { ReactSheetTableRow, ReactSheetTableProp } from './types'
 
 
-export const Table = (props: TableProp) => {
+export const ReactSheetTable = (props: ReactSheetTableProp) => {
     const { headers, rows } = props
 
     const renderHeader = () => {
@@ -15,7 +15,7 @@ export const Table = (props: TableProp) => {
         return rows.map((row, index) => <tr id={row.id as string} key={index}>{renderRow(row)}</tr>)
     }
 
-    const renderRow = (row: ITableRow) => {
+    const renderRow = (row: ReactSheetTableRow) => {
         const cellList = []
         for (const cell in row) {
             if(cell === 'id') continue
@@ -25,7 +25,7 @@ export const Table = (props: TableProp) => {
             })
         }
 
-        return cellList.map((cell, index) => <TableCell cell={cell.row} header={cell.header} updateRow={updateRow} key={index} />)
+        return cellList.map((cell, index) => <Cell cell={cell.row} header={cell.header} updateRow={updateRow} key={index} />)
     }
 
 

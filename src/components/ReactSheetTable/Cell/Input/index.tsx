@@ -4,7 +4,7 @@ import { TableCellInputProp } from './types'
 import { OutputRow } from '../types'
 
 
-export const TableCellInput = (props: TableCellInputProp) => {
+export const Input = (props: TableCellInputProp) => {
     const { cell, header, updateRow } = props
     const [value, setValue] = useState(cell)
     const [initialValue, setInitialValue] = useState(value)
